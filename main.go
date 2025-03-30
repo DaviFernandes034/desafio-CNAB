@@ -1,14 +1,18 @@
 package main
 
-import(
-
-	"desafia-CNAB/repository"
+import (
+	"desafia-CNAB/model"
+	_"desafia-CNAB/repository"
+	"fmt"
 )
 
 
 func main(){
 
 
-	repository.Init()
+	//repository.Init()
+
+	transfer:= model.TypeGetById(1)
+	fmt.Println(transfer.Type, transfer.Description, transfer.Nature, transfer.Signal)
 
 }
