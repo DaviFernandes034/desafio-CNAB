@@ -25,12 +25,12 @@ func Connection()(*sql.DB, error){
 
 	db, err:= sql.Open("sqlserver",stringConn)
 	if err != nil{
-		return nil, fmt.Errorf("erro ao abrir o banco de dados", err)
+		return nil, fmt.Errorf("erro ao abrir o banco de dados: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return nil ,fmt.Errorf("erro ao conectar com o banco de dados", err)
+		return nil ,fmt.Errorf("erro ao conectar com o banco de dados: %v", err)
 
 	}
 
