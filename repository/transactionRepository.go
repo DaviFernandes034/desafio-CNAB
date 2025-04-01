@@ -68,5 +68,36 @@ func (t *typeRepository) Save(transactin model.Transaction) error {
 
 // FindAll implements TypeRepository.(fazer outro dia)
 func (t *typeRepository) FindAll() ([]model.Transaction, error) {
-	panic("unimplemented")
+	
+	query:= `select * from CNAB`
+
+	rows, err:= t.db.Query(query)
+	if err != nil {
+
+		return nil, fmt.Errorf("erro ao buscar as transações: %v", err)
+	}
+	defer rows.Close()
+
+	var Transactions []model.Transaction
+
+	for rows.Next(){
+
+		var Transaction model.Transaction
+
+		if err:= rows.Scan(&Transaction.Type, &Transaction.Nature, &Transaction.Signal,
+			&Transaction.Date, &Transaction.Value, &Transaction.Cpf,&Transaction.Card,&Transaction.Time,
+			&Transaction.Store_owner, &Transaction.Store_name); err != nil{
+
+			return nil, fmt.Errorf("erro ao ler a linha: %v", err)
+		}
+
+		Transactions = append(Transactions, Transaction)
+	}
+
+	if err:= rows.Err(); err != nil {
+
+		return nil, fmt.Errorf("erro ao iterar sobre os resultados: %v", err)
+	}
+
+	return Transactions, nil
 }
