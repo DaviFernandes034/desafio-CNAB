@@ -76,7 +76,8 @@ func (t *typeRepository) Save(transaction model.Transaction) error {
 //funcao para trazer todos os dados do banco de dados
 func (t *typeRepository) FindAll() ([]model.Transaction, error) {
 	
-	query:= `select * from CNAB`
+	query := `SELECT Tipo, Natureza, Sinal, Data, Valor, Cpf, Cartao, Hora, Dono_loja, Nome_loja FROM CNAB`
+
 
 	rows, err:= t.db.Query(query)
 	if err != nil {
