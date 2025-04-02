@@ -1,13 +1,14 @@
 package repository
 
 import (
-
+	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/joho/godotenv"
 )
 
-func Init(){
+func Init()(*sql.DB,error){
 
 	err := godotenv.Load()
 	if err != nil {
@@ -18,11 +19,13 @@ func Init(){
 		// Conectar ao banco de dados
 		db, err := Connection()
 		if err != nil {
-			log.Fatalf("Erro: %v", err)
+			return nil, fmt.Errorf("erro ao conectar com o banco de dados: %v", err.Error())
 		}
 		
 	
 		log.Println("Conexão com o banco de dados estabelecida com sucesso")
-		defer db.Close()
+		
+
+		return db, nil
 	
 }

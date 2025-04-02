@@ -1,18 +1,40 @@
 package main
 
 import (
-	"desafia-CNAB/model"
-	_"desafia-CNAB/repository"
+	
+	"desafia-CNAB/repository"
 	"fmt"
+
+	"desafia-CNAB/controller"
+	"desafia-CNAB/services"
+
+	"github.com/gin-gonic/gin"
 )
 
 
 func main(){
 
 
-	//repository.Init()
+	db, err:= repository.Init()
+	if err != nil{
+		fmt.Errorf("erro ao conectar com o banco de dados: %v", err.Error())
+	}
+	defer db.Close()
+	router:= gin.Default()
 
-	transfer:= model.TypeGetById(1)
-	fmt.Println(transfer.Type, transfer.Description, transfer.Nature, transfer.Signal)
+	tr:= repository.NewtypeRepository(db)
+	ts:=services.TransactionServices{
+		TransactionRepository: tr,
+	}
+	cb:= &controller.CnabController{
+		TransactionServices: ts,
+	}
+
+
+	router.POST("/upload", cb.UploadFile())
+	router.GET("/getAll", cb.GetAll())
+
+	router.Run(":8080")
+
 
 }

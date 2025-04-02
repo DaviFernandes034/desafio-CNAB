@@ -16,7 +16,7 @@ type TransactionServices struct {
 }
 
 //metado para pegar um arquivo e ler uma linha por vez, tranformando a linha em string
-func (t *TransactionServices) ArchiveProcess(file multipart.File){
+func (t *TransactionServices) ArchiveProcess(file multipart.File) {
 
 	Reader:= bufio.NewScanner(file)
 	for Reader.Scan() {//enquanto estiver linhas, o loop continua
@@ -57,7 +57,9 @@ func parseLinha(line string) model.Transaction {
 	horasrv, err:= time.Parse("150405", line[42:48])//transformando a substrings em hora
 	if err != nil {
 		fmt.Errorf("erro ao converter a hora: %v", err)
+		
 	}
+	horaFormatada := horasrv.Format("15:04:05")
 
 
 	var tp model.TransferType
@@ -72,9 +74,9 @@ func parseLinha(line string) model.Transaction {
 		Value: value/100,
 		Cpf: line[19:30],
 		Card: line[30:42],
-		Time: horasrv,
+		Time: horaFormatada,
 		Store_owner: line[48:62],
-		Store_name: line[62:81],
+		Store_name: line[62:80],
 
 	}
 	

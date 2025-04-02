@@ -1,47 +1,46 @@
 package model
 
+import "errors"
 
-type status string
+type Status string
 
 const (
 	entrada = "entrada"
-	saida = "saida"
-)
+	saida   = "saída"
+) //const para padronizar a escrita
+
 type TransferType struct {
-
-	Type int
+	Type        int
 	Description string
-	Nature status
-	Signal string
+	Nature      Status
+	Signal      string
+} //struct da transferencia
 
-
-}
-
-var Transfer = []TransferType{
+var Transfer = []TransferType{ //slice de todas as tranferencias
 
 	{1, "debito", entrada, "+"},
 	{2, "boleto", saida, "-"},
-	{3, "financiamento",saida,"-"},
+	{3, "financiamento", saida, "-"},
 	{4, "credito", entrada, "+"},
-	{5,"recebimento emprestimo",entrada, "+"},
+	{5, "recebimento emprestimo", entrada, "+"},
 	{6, "vendas", entrada, "+"},
 	{7, "recebimento TED", entrada, "+"},
 	{8, "recebimento DOC", entrada, "+"},
 	{9, "aluguel saida", saida, "-"},
 }
 
-func TypeGetById(Type int) (*TransferType){
+// funcao para pega cada tipo de tranferencia pelo id
+func (tp *TransferType) TypeGetById(Type int) ( error) {
 
-	for _, t:= range Transfer {
+	for _, t := range Transfer {
 
 		if t.Type == Type {
-			return &t
-		}
+			
+			*tp = t
+			return nil
+		} 
+					
 	}
-
-	return nil
+	return  errors.New("invalid type!")
 
 }
-
-
-
